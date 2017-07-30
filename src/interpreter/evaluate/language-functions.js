@@ -7,14 +7,14 @@ const scopedFunction = (bodyExpressions = [], expectedArguments = [], scope = {}
 ];
 
 module.exports = {
-  print: (scope, value) => {
-    process.stdout.write(value);
+  print: (scope, ...values) => {
+    values.forEach(value => process.stdout.write(value.toString()));
   },
   let: (scope, name, value) => {
-    if (scope.variables.name) {
+    if (name in scope.variables) {
       throw new Error(`Error. Can't overwrite previously assigned scoped variable '${name}'`);
     }
-    if (scope.functions.name) {
+    if (name in scope.functions) {
       throw new Error(`Error. Can't overwrite scoped function '${name}' with variable declaration.`);
     }
     scope.variables[name] = value;
@@ -23,8 +23,16 @@ module.exports = {
     const functionScope = createScope(scope);
     scope.functions[name] = scopedFunction(bodyExpressions, expectedArguments, functionScope);
   },
-  '+': (scope, x, y) => x + y,
-  '-': (scope, x, y) => x - y,
-  '/': (scope, x, y) => x / y,
-  '*': (scope, x, y) => x * y
+  '+': (scope, ...numbers) => {
+    return numbers.reduce((acc, cur) => acc + cur, 0);
+  },
+  '-': (scope, x, y) => {
+    return x - y;
+  },
+  '/': (scope, x, y) => {
+    return x / y;
+  },
+  '*': (scope, x, y) => {
+    return x * y;
+  }
 };

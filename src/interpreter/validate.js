@@ -10,4 +10,5 @@ module.exports = (tokens) => {
   if (left !== right) {
     throw new Error('Error. Unmatched parentheses.');
   }
+  return tokens;
 };
