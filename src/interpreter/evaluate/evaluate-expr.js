@@ -4,6 +4,7 @@ const {
   findFunctionInScope,
   findVariableInScope
 } = require('./find-in-scope');
+const createScope = require('./create-scope');
 const languageFunctions = require('./language-functions');
 
 const evaluateExpr = (scope, expr) => {
@@ -92,17 +93,21 @@ const evaluateFunctionExpr = (scope, expr) => {
       .slice(1)
       .map(subExpr => evaluateExpr(scope, subExpr));
 
+    // Every time the function runs it gets it's own scope, meaning variables set inside this function
+    // will not persist across different calls.
+    const executionScope = createScope(scopedFunction.scope);
+
     if (args.length !== scopedFunction.expectedArguments.length) {
       throw new Error(`Expected ${scopedFunction.expectedArguments.length} arguments for function ${indentifierToken.value} but got ${args.legnth}`);
     }
 
     args.forEach((argument, i) => {
-      if (argument.isFunction) scopedFunction.scope.functions[scopedFunction.expectedArguments[i]] = argument;
-      else scopedFunction.scope.variables[scopedFunction.expectedArguments[i]] = argument;
+      if (argument.isFunction) executionScope.functions[scopedFunction.expectedArguments[i]] = argument;
+      else executionScope.variables[scopedFunction.expectedArguments[i]] = argument;
     });
 
     const result = scopedFunction.bodyExpressions.reduce((acc, fExpr, i) => {
-      return evaluateExpr(scopedFunction.scope, fExpr)
+      return evaluateExpr(executionScope, fExpr)
     }, 0);
     return result;
   }
