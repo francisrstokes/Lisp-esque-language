@@ -83,13 +83,14 @@ const evaluateFunctionExpr = (scope, expr) => {
       else scopedFunction.scope.variables[scopedFunction.expectedArguments[i]] = argument;
     });
 
-    // stack.push(scopedFunction.scope);
-    const result = scopedFunction.bodyExpressions.reduce((acc, fExpr, i) =>
-      evaluateFunctionExpr(scopedFunction.scope, fExpr), 
-    0);
-    // stack.pop();
+    const result = scopedFunction.bodyExpressions.reduce((acc, fExpr, i) => {
+      return evaluateExpr(scopedFunction.scope, fExpr)
+    }, 0);
     return result;
   }
+
+  // Evaluate as a single expression
+  if (Array.isArray(expr)) return evaluateExpr(scope, expr[0]);
 
   throw new Error(`Unrecognised expression: ${JSON.stringify(expr)}`);
 };
