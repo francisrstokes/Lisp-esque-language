@@ -3,7 +3,7 @@
 (function test (x)
   (if (= x T)
     (
-      (let a 10)
+      (let a 10.2)
       (let b 2)
       (* a b)
     )
