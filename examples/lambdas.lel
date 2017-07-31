@@ -17,7 +17,9 @@
 
 (call anon-hello "anonymous")
 
-; Lambdas can also be immediately invoked
+; Lambdas can also act as Imediately-invoked function expressions when call'd directly
 (call
-  (lambda (name) (print "Immediate hello to you, " name "\n"))
-  "Francis")
+  (lambda (x)
+    (let xs (* x x x))
+    (print x " cubed is " xs "\n"))
+  5)
