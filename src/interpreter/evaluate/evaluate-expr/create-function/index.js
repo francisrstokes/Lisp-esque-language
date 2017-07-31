@@ -1,6 +1,6 @@
-const symbols = require('../../../symbols');
+const symbols = require('../../../../symbols');
 const scopedFunction = require('./scoped-function');
-const createScope = require('../create-scope');
+const createScope = require('../../create-scope');
 
 module.exports = (scope, expr) => {
   if (expr[1].type !== symbols.IDENTIFIER) {
@@ -21,6 +21,6 @@ module.exports = (scope, expr) => {
   }
 
   const functionScope = createScope(scope);
-  scope.functions[fName] = scopedFunction(fBody, expectedArguments, functionScope);
+  scope.functions[fName] = scopedFunction(fName, fBody, expectedArguments, functionScope);
   return scope.functions[fName];
 };
