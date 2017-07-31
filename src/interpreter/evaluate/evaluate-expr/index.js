@@ -46,13 +46,15 @@ const evaluateExpr = (scope, expr) => {
     if (expr.type === symbols.IDENTIFIER) {
       const identifierType = expr.value;
 
-      // Pass back variable value
+
+      // Pass back variable value. Explicitly check null instead of other
+      // falsey values that might really be contained in the variable
       const variableInScope = findVariableInScope(scope, identifierType);
-      if (variableInScope) return variableInScope;
+      if (variableInScope !== null) return variableInScope;
 
       // Pass back function descriptor
       const functionInScope = findFunctionInScope(scope, identifierType)
-      if (functionInScope) return createToken(symbols.FUNCTION_REFERENCE, functionInScope);
+      if (functionInScope !== null) return createToken(symbols.FUNCTION_REFERENCE, functionInScope);
     }
   }
 
