@@ -46,12 +46,13 @@ const evaluateExpr = (scope, expr) => {
     if (expr.type === symbols.IDENTIFIER) {
       const identifierType = expr.value;
 
-      // Pass back function descriptor
-      if (identifierType in scope.functions) return createToken(symbols.FUNCTION_REFERENCE, scope.functions[identifierType]);
-
       // Pass back variable value
-      if (identifierType in scope.variables) return scope.variables[identifierType];
-      // Search upper scope
+      const variableInScope = findVariableInScope(scope, identifierType);
+      if (variableInScope) return variableInScope;
+
+      // Pass back function descriptor
+      const functionInScope = findFunctionInScope(scope, identifierType)
+      if (functionInScope) return createToken(symbols.FUNCTION_REFERENCE, functionInScope);
     }
   }
 

@@ -11,7 +11,37 @@ Lel is a lisp like programming language. It is not meant for practical purposes,
   - Function
 - Lexical scoping of functions and variables
 - Functions form closures
+- Call by reference for functions
 - Conditionals
+
+### Keywords
+
+The standard language implements a range of functionality.
+
+#### Variables
+
+Variables are declared with the `let` keyword, and are immutable.
+
+```lisp
+(let x 10)
+```
+
+They can of course be assigned as the result of a function:
+
+```lisp
+(let x (+ 4 6))
+```
+
+#### Functions
+
+Functions are declared with the `function` keyword. The last statement in a function body is the final return value.
+
+```lisp
+(function add1 (x)
+  (+ x 1))
+```
+
+Functions exist in both the scope they were declared in, and a separate execution scope for running instance. A function declared inside a function FIXXXXXXXX
 
 ## Tokeniser and Parser
 
