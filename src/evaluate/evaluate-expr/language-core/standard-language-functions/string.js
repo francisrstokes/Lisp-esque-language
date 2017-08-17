@@ -15,4 +15,4 @@ module.exports = {
         .map(char => createToken(symbols.STRING, char)))
     );
   }
-}
+};
